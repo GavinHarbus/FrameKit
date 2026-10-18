@@ -27,6 +27,19 @@
       },
       "shouldTranslate" : false
     },
+    "NSHumanReadableCopyright" : {
+      "comment" : "Copyright notice shown in the native About panel.",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "© 2026 Gavin Schnee Studio"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
     "NSScreenCaptureUsageDescription" : {
       "comment" : "Shown by macOS when asking to capture windows. FrameKit is the product name.",
       "extractionState" : "stale",

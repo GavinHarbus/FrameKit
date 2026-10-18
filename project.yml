@@ -42,6 +42,7 @@ targets:
         CFBundleVersion: '1'
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHighResolutionCapable: true
+        NSHumanReadableCopyright: © 2026 Gavin Schnee Studio
         NSPrincipalClass: NSApplication
         NSScreenCaptureUsageDescription: FrameKit captures your selected app window so you can preview and export screenshots.
     settings:
