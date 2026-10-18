@@ -6,6 +6,12 @@ struct ContentView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var inspectorPresented = true
     @State private var permissionsPresented = false
+    @State private var sidebarSelection: pid_t?
+
+    init(model: AppModel) {
+        self.model = model
+        _sidebarSelection = State(initialValue: model.selectedAppID)
+    }
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -27,8 +33,17 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             model.checkPermissions()
         }
-        .onChange(of: model.selectedAppID) { _, _ in model.appSelectionChanged() }
-        .onChange(of: model.selectedWindowID) { _, _ in model.windowSelectionChanged() }
+        // The native sidebar can write its selection while SwiftUI updates the
+        // List. Keep that write in view state, then commit after this update.
+        .task(id: sidebarSelection) {
+            let selection = sidebarSelection
+            await Task.yield()
+            guard !Task.isCancelled else { return }
+            model.selectApp(selection)
+        }
+        .onChange(of: model.selectedAppID) { _, selection in
+            if sidebarSelection != selection { sidebarSelection = selection }
+        }
         .onChange(of: model.originalSize) { _, _ in model.schedulePreview() }
         .onChange(of: model.exportWidth) { _, _ in model.schedulePreview() }
         .onChange(of: model.exportHeight) { _, _ in model.schedulePreview() }
@@ -36,7 +51,7 @@ struct ContentView: View {
     }
 
     private var applicationSidebar: some View {
-        List(selection: $model.selectedAppID) {
+        List(selection: $sidebarSelection) {
             Section("Running Apps") {
                 ForEach(model.apps) { app in
                     HStack(spacing: 9) {

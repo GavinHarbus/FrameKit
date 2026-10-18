@@ -165,22 +165,6 @@
         }
       }
     },
-    "An old entry may belong to an earlier build or another copy. Remove that entry, add the currently running app, and allow access." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An old entry may belong to an earlier build or another copy. Remove that entry, add the currently running app, and allow access."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "旧记录可能属于之前的构建或另一个副本。请移除对应的旧记录，重新添加当前运行的应用并开启权限。"
-          }
-        }
-      }
-    },
     "App" : {
       "localizations" : {
         "en" : {
@@ -1039,22 +1023,6 @@
         }
       }
     },
-    "Permission Not Recognized?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Permission Not Recognized?"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已开启权限，但仍未识别？"
-          }
-        }
-      }
-    },
     "Permission status updates automatically. After allowing Screen Recording, refresh the window list. Reopen FrameKit if macOS asks." : {
       "localizations" : {
         "en" : {
@@ -1536,22 +1504,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "设置系统权限"
-          }
-        }
-      }
-    },
-    "Show Current App in Finder" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show Current App in Finder"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在 Finder 中显示当前应用"
           }
         }
       }

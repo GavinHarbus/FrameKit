@@ -56,7 +56,7 @@ targets:
   FrameKitTests:
     type: bundle.unit-test
     platform: macOS
-    sources: [Tests/FrameKitTests, Resources/Localizable.xcstrings, Resources/InfoPlist.xcstrings]
+    sources: [Tests/FrameKitTests, Sources/FrameKit/AppModel.swift, Resources/Localizable.xcstrings, Resources/InfoPlist.xcstrings]
     dependencies:
       - target: FrameKitCore
     settings:

@@ -3,11 +3,17 @@ import FrameKitCore
 
 struct CaptureInspector: View {
     @ObservedObject var model: AppModel
+    @State private var windowSelection: CGWindowID?
+
+    init(model: AppModel) {
+        self.model = model
+        _windowSelection = State(initialValue: model.selectedWindowID)
+    }
 
     var body: some View {
         Form {
             Section {
-                Picker("Window", selection: $model.selectedWindowID) {
+                Picker("Window", selection: $windowSelection) {
                     Text("Choose a Window").tag(Optional<CGWindowID>.none)
                     ForEach(model.appWindows) { window in
                         Text(verbatim: window.displayTitle).tag(Optional(window.id))
@@ -106,6 +112,16 @@ struct CaptureInspector: View {
         .formStyle(.grouped)
         .controlSize(.small)
         .scrollContentBackground(.hidden)
+        .task(id: windowSelection) {
+            let selection = windowSelection
+            let appID = model.selectedAppID
+            await Task.yield()
+            guard !Task.isCancelled, appID == model.selectedAppID else { return }
+            model.selectWindow(selection)
+        }
+        .onChange(of: model.selectedWindowID) { _, selection in
+            if windowSelection != selection { windowSelection = selection }
+        }
     }
 
     private func dimensionField(_ title: String, text: Binding<String>, unit: String) -> some View {

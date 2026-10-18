@@ -13,13 +13,6 @@ struct PermissionView: View {
             if !model.hasAccessibility || !model.hasScreenCapture {
                 Text("Permission status updates automatically. After allowing Screen Recording, refresh the window list. Reopen FrameKit if macOS asks.")
                     .font(.caption).foregroundStyle(.secondary)
-                DisclosureGroup("Permission Not Recognized?") {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("An old entry may belong to an earlier build or another copy. Remove that entry, add the currently running app, and allow access.")
-                        Button("Show Current App in Finder", action: model.revealRunningApp)
-                        Text(verbatim: model.runningAppPath).textSelection(.enabled).foregroundStyle(.secondary)
-                    }.font(.caption).padding(.top, 8)
-                }.font(.caption)
             }
         }
         .fixedSize(horizontal: false, vertical: true)

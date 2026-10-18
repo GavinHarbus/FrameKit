@@ -15,8 +15,8 @@ struct RunningApp: Identifiable {
 final class AppModel: ObservableObject {
     @Published var apps: [RunningApp] = []
     @Published var windows: [WindowDescriptor] = []
-    @Published var selectedAppID: pid_t?
-    @Published var selectedWindowID: CGWindowID?
+    @Published private(set) var selectedAppID: pid_t?
+    @Published private(set) var selectedWindowID: CGWindowID?
     @Published private(set) var hasAccessibility = false
     @Published private(set) var hasScreenCapture = false
     @Published var busy = false
@@ -45,11 +45,12 @@ final class AppModel: ObservableObject {
     private let images = ImageProcessingService()
     private var previewTask: Task<Void, Never>?
     private var previewGeneration = UUID()
-    private let permissions = PermissionMonitor()
+    private let permissions: PermissionMonitor
     private var permissionSubscription: AnyCancellable?
 
-    init() {
-        permissionSubscription = permissions.$snapshot.sink { [weak self] snapshot in
+    init(permissions: PermissionMonitor? = nil) {
+        self.permissions = permissions ?? PermissionMonitor()
+        permissionSubscription = self.permissions.$snapshot.sink { [weak self] snapshot in
             guard let self else { return }
             hasAccessibility = snapshot.accessibility
             hasScreenCapture = snapshot.screenCapture
@@ -108,38 +109,44 @@ final class AppModel: ObservableObject {
             .map { RunningApp(id: $0.processIdentifier, name: $0.localizedName ?? String(localized: "App \(String($0.processIdentifier))"), icon: $0.icon) }
             .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
         if let selectedAppID, !apps.contains(where: { $0.id == selectedAppID }) {
-            self.selectedAppID = nil
-            selectedWindowID = nil
-            clearCapture()
+            selectApp(nil)
         }
         guard hasScreenCapture else {
             windows = []
-            selectedWindowID = nil
+            selectWindow(nil)
             status(String(localized: "Allow Screen Recording, then refresh to choose a window."))
             return
         }
         do {
             windows = try await captureService.windows()
             if let selectedWindowID, !appWindows.contains(where: { $0.id == selectedWindowID }) {
-                self.selectedWindowID = nil
-                clearCapture()
+                selectWindow(nil)
                 status(String(localized: "The previously selected window is no longer available. Choose another window."))
             } else {
                 if selectedWindowID == nil, appWindows.count == 1 {
-                    selectedWindowID = appWindows.first?.id
-                    windowSelectionChanged()
+                    selectWindow(appWindows.first?.id)
                 }
                 status(String(localized: "Window list updated."))
             }
         } catch { windows = []; status(error.localizedDescription, error: true) }
     }
 
-    func appSelectionChanged() {
+    func selectApp(_ id: pid_t?) {
+        guard id != selectedAppID else { return }
+        guard id == nil || apps.contains(where: { $0.id == id }) else { return }
+        selectedAppID = id
         selectedWindowID = appWindows.count == 1 ? appWindows.first?.id : nil
         windowSelectionChanged()
     }
 
-    func windowSelectionChanged() {
+    func selectWindow(_ id: CGWindowID?) {
+        guard id != selectedWindowID else { return }
+        guard id == nil || appWindows.contains(where: { $0.id == id }) else { return }
+        selectedWindowID = id
+        windowSelectionChanged()
+    }
+
+    private func windowSelectionChanged() {
         clearCapture()
         resizeResult = nil
         guard let window = selectedWindow else { return }
@@ -298,10 +305,6 @@ final class AppModel: ObservableObject {
     }
 
     func showExport() { if let lastExportURL { NSWorkspace.shared.activateFileViewerSelecting([lastExportURL]) } }
-    func revealRunningApp() {
-        NSWorkspace.shared.activateFileViewerSelecting([Bundle.main.bundleURL])
-    }
-    var runningAppPath: String { Bundle.main.bundleURL.path }
     private func begin(_ text: String) { busy = true; activity = text }
     private func end() { busy = false; activity = "" }
     private func status(_ text: String, error: Bool = false) { message = text; messageIsError = error }
