@@ -60,7 +60,12 @@ public enum ImageExporter {
 }
 
 /// Image work is serialized off the main actor; a large export does not block the UI.
-public actor ImageProcessingService {
+public protocol ImageProcessing: Sendable {
+    func preview(_ source: CGImage, configuration: ExportConfiguration) async throws -> CGImage
+    func saveRendered(_ image: CGImage, size: PixelSize, to url: URL) async throws
+}
+
+public actor ImageProcessingService: ImageProcessing {
     public init() {}
     public func preview(_ source: CGImage, configuration: ExportConfiguration) throws -> CGImage {
         try Task.checkCancellation()
@@ -69,8 +74,11 @@ public actor ImageProcessingService {
     }
     public func save(_ source: CGImage, configuration: ExportConfiguration, to url: URL) throws {
         let image = try ImageExporter.render(source, configuration: configuration)
-        let data = try ImageExporter.pngData(image, expected: configuration.size)
+        try saveRendered(image, size: configuration.size, to: url)
+    }
+    public func saveRendered(_ image: CGImage, size: PixelSize, to url: URL) throws {
+        let data = try ImageExporter.pngData(image, expected: size)
         try data.write(to: url, options: .atomic)
-        try ImageExporter.validatePNG(Data(contentsOf: url), expected: configuration.size)
+        try ImageExporter.validatePNG(Data(contentsOf: url), expected: size)
     }
 }

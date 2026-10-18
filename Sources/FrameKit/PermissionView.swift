@@ -11,7 +11,7 @@ struct PermissionView: View {
             permissionRow("Screen Recording", detail: "List windows and capture screenshots", granted: model.hasScreenCapture,
                           request: model.requestScreenCapture, settings: { model.openPrivacy("Privacy_ScreenCapture") })
             if !model.hasAccessibility || !model.hasScreenCapture {
-                Text("Permission status updates automatically. After allowing Screen Recording, refresh the window list. Reopen FrameKit if macOS asks.")
+                Text("Permissions and windows update automatically after you allow access. Reopen FrameKit if macOS asks.")
                     .font(.caption).foregroundStyle(.secondary)
             }
         }

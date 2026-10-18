@@ -91,6 +91,11 @@ public struct ResizeResult: Sendable {
     public let requested: WindowRequest
     public let actualFrame: CGRect
     public let isStable: Bool
+    public init(requested: WindowRequest, actualFrame: CGRect, isStable: Bool) {
+        self.requested = requested
+        self.actualFrame = actualFrame
+        self.isStable = isStable
+    }
     public var reachedRequestedSize: Bool {
         abs(actualFrame.width - requested.size.width) <= 0.5 &&
         abs(actualFrame.height - requested.size.height) <= 0.5

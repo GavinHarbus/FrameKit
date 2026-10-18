@@ -18,12 +18,15 @@ struct FrameKitApp: App {
             CommandGroup(replacing: .newItem) {}
             CommandMenu("Capture") {
                 Button("Refresh Window List") { Task { await model.refresh() } }
-                    .keyboardShortcut("r", modifiers: .command).disabled(model.busy)
-                Button("Capture Selected Window") { Task { await model.takeScreenshot() } }
-                    .keyboardShortcut("k", modifiers: .command).disabled(!model.canCapture)
+                    .keyboardShortcut("r", modifiers: .command).disabled(model.busy || model.isRefreshing)
+                Button(model.captureActionTitle) { Task { await model.performCapture() } }
+                    .keyboardShortcut("k", modifiers: .command).disabled(!model.canPerformCapture)
+                Button("Resize Only") { Task { await model.resize(andCapture: false) } }
+                    .disabled(model.windowSizing != .custom || !model.canResize)
+                Divider()
                 Button("Export PNG…") { Task { await model.export() } }
                     .keyboardShortcut("e", modifiers: .command)
-                    .disabled(model.capture == nil || model.busy || model.exportConfiguration == nil)
+                    .disabled(!model.canExport)
             }
         }
     }

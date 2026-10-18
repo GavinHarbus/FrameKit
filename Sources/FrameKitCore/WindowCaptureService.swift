@@ -8,9 +8,21 @@ public struct CapturedWindow {
     public let window: WindowDescriptor
     public let date = Date()
     public let scale: Float
+
+    public init(image: CGImage, window: WindowDescriptor, scale: Float) {
+        self.image = image
+        self.window = window
+        self.scale = scale
+    }
 }
 
-public actor WindowCaptureService {
+public protocol WindowCapturing: Sendable {
+    func windows() async throws -> [WindowDescriptor]
+    func current(_ selected: WindowDescriptor) async throws -> WindowDescriptor
+    func capture(_ selected: WindowDescriptor, expectedFrame: CGRect?) async throws -> CapturedWindow
+}
+
+public actor WindowCaptureService: WindowCapturing {
     public init() {}
 
     private func content() async throws -> SCShareableContent {

@@ -1,6 +1,519 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Original %@ × %@ px": {"localizations":{"en":{"stringUnit":{"state":"translated","value":"Original %@ × %@ px"}},"zh-Hans":{"stringUnit":{"state":"translated","value":"原图 %@ × %@ px"}}}},
+    "Allow Screen Recording to choose a window.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Screen Recording to choose a window."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请允许屏幕录制，以选择窗口。"
+          }
+        }
+      }
+    },
+    "Selected “%@”. Use the capture button in the toolbar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected “%@”. Use the capture button in the toolbar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选择「%@」，请使用工具栏的截图按钮。"
+          }
+        }
+      }
+    },
+    "Apply the custom window size, verify it, and capture (⌘K)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply the custom window size, verify it, and capture (⌘K)"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用自定义窗口尺寸，验证后截图（⌘K）"
+          }
+        }
+      }
+    },
+    "Resize Only": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resize Only"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅调整窗口"
+          }
+        }
+      }
+    },
+    "Permissions and windows update automatically after you allow access. Reopen FrameKit if macOS asks.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permissions and windows update automatically after you allow access. Reopen FrameKit if macOS asks."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授权后会自动更新权限状态和窗口列表。若 macOS 要求，请重新打开 FrameKit。"
+          }
+        }
+      }
+    },
+    "Custom Size": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom Size"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自定义尺寸"
+          }
+        }
+      }
+    },
+    "Capture the window as it is. No resizing or Accessibility access is needed.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Capture the window as it is. No resizing or Accessibility access is needed."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "按窗口当前尺寸截图，无需调整窗口或授予辅助功能权限。"
+          }
+        }
+      }
+    },
+    "The toolbar’s Resize & Capture button applies these values before taking the screenshot. Size includes the title bar and is measured in points.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The toolbar’s Resize & Capture button applies these values before taking the screenshot. Size includes the title bar and is measured in points."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "工具栏的“调整并截图”会先应用这些数值，再截图。尺寸包含标题栏，单位为逻辑点。"
+          }
+        }
+      }
+    },
+    "Coordinates start at the top-left of the main display. Right and down are positive.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coordinates start at the top-left of the main display. Right and down are positive."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以主屏左上角为原点，向右、向下为正。"
+          }
+        }
+      }
+    },
+    "Allow Accessibility": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Accessibility"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允许辅助功能"
+          }
+        }
+      }
+    },
+    "Accessibility is only needed to resize or move another app’s window.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessibility is only needed to resize or move another app’s window."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅调整其他应用的窗口尺寸或位置时需要辅助功能权限。"
+          }
+        }
+      }
+    },
+    "Output Size": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output Size"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输出尺寸"
+          }
+        }
+      }
+    },
+    "Original": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Original"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原始尺寸"
+          }
+        }
+      }
+    },
+    "Custom": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自定义"
+          }
+        }
+      }
+    },
+    "Save the original screenshot dimensions. Export only asks where to save the PNG.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save the original screenshot dimensions. Export only asks where to save the PNG."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保留截图原始像素尺寸，导出时仅需选择 PNG 保存位置。"
+          }
+        }
+      }
+    },
+    "Output": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输出"
+          }
+        }
+      }
+    },
+    "Output %@": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Output %@"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输出 %@"
+          }
+        }
+      }
+    },
+    "Edit Output Size": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit Output Size"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改输出尺寸"
+          }
+        }
+      }
+    },
+    "Updating output preview…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Updating output preview…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在更新输出预览…"
+          }
+        }
+      }
+    },
+    "The preview shows the previous output settings.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The preview shows the previous output settings."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览仍显示上一次输出设置。"
+          }
+        }
+      }
+    },
+    "Exported": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exported"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已导出"
+          }
+        }
+      }
+    },
+    "Not Exported": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Exported"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未导出"
+          }
+        }
+      }
+    },
+    "Export before switching windows or quitting. Screenshots are not saved automatically.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export before switching windows or quitting. Screenshots are not saved automatically."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "截图不会自动保存，请在切换窗口或退出前导出。"
+          }
+        }
+      }
+    },
+    "Allow Screen Recording": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow Screen Recording"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "允许屏幕录制"
+          }
+        }
+      }
+    },
+    "FrameKit needs access to list your windows and capture the one you select.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FrameKit needs access to list your windows and capture the one you select."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "FrameKit 需要此权限来列出窗口并截取你选择的窗口。"
+          }
+        }
+      }
+    },
+    "Select an app in the sidebar to see its windows.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select an app in the sidebar to see its windows."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "从侧边栏选择应用以查看它的窗口。"
+          }
+        }
+      }
+    },
+    "No Available Windows": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Available Windows"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有可用窗口"
+          }
+        }
+      }
+    },
+    "Open a regular window on the current desktop. The list refreshes when you return to FrameKit.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open a regular window on the current desktop. The list refreshes when you return to FrameKit."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在当前桌面打开普通窗口。返回 FrameKit 后会自动刷新列表。"
+          }
+        }
+      }
+    },
+    "Choose the target window below the app list.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose the target window below the app list."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在应用列表下方选择目标窗口。"
+          }
+        }
+      }
+    },
+    "Accessibility is needed to apply your custom window size. Current Size captures without resizing.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accessibility is needed to apply your custom window size. Current Size captures without resizing."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用自定义窗口尺寸需要辅助功能权限。“当前尺寸”模式可直接截图。"
+          }
+        }
+      }
+    },
+    "Click Capture in the toolbar to take a screenshot at the current window size.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click Capture in the toolbar to take a screenshot at the current window size."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击工具栏的“截图”，按当前窗口尺寸截取画面。"
+          }
+        }
+      }
+    },
+    "Set the window dimensions in the inspector, then click Resize & Capture in the toolbar.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set the window dimensions in the inspector, then click Resize & Capture in the toolbar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在检查器中设置窗口尺寸，然后点击工具栏的“调整并截图”。"
+          }
+        }
+      }
+    },
     "%@ · PNG · sRGB · No alpha channel" : {
       "comment" : "Placeholder is a formatted size. Keep units pt, px, PNG, and sRGB unchanged.",
       "localizations" : {

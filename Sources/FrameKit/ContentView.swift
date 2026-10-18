@@ -7,10 +7,12 @@ struct ContentView: View {
     @State private var inspectorPresented = true
     @State private var permissionsPresented = false
     @State private var sidebarSelection: pid_t?
+    @State private var windowSelection: CGWindowID?
 
     init(model: AppModel) {
         self.model = model
         _sidebarSelection = State(initialValue: model.selectedAppID)
+        _windowSelection = State(initialValue: model.selectedWindowID)
     }
 
     var body: some View {
@@ -32,6 +34,13 @@ struct ContentView: View {
         .task { await model.monitorPermissions() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             model.checkPermissions()
+            model.requestRefresh()
+        }
+        .onReceive(NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didLaunchApplicationNotification)) { _ in
+            model.requestRefresh()
+        }
+        .onReceive(NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didTerminateApplicationNotification)) { _ in
+            model.requestRefresh()
         }
         // The native sidebar can write its selection while SwiftUI updates the
         // List. Keep that write in view state, then commit after this update.
@@ -44,10 +53,21 @@ struct ContentView: View {
         .onChange(of: model.selectedAppID) { _, selection in
             if sidebarSelection != selection { sidebarSelection = selection }
         }
-        .onChange(of: model.originalSize) { _, _ in model.schedulePreview() }
-        .onChange(of: model.exportWidth) { _, _ in model.schedulePreview() }
-        .onChange(of: model.exportHeight) { _, _ in model.schedulePreview() }
-        .onChange(of: model.resizeMode) { _, _ in model.schedulePreview() }
+        .task(id: windowSelection) {
+            let selection = windowSelection
+            let appID = model.selectedAppID
+            await Task.yield()
+            guard !Task.isCancelled, appID == model.selectedAppID else { return }
+            model.selectWindow(selection)
+        }
+        .onChange(of: model.selectedWindowID) { _, selection in
+            if windowSelection != selection { windowSelection = selection }
+        }
+        .task(id: model.previewRequest) {
+            await Task.yield()
+            guard !Task.isCancelled else { return }
+            model.schedulePreview()
+        }
     }
 
     private var applicationSidebar: some View {
@@ -71,16 +91,27 @@ struct ContentView: View {
         .disabled(model.busy)
         .navigationTitle("FrameKit")
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            if !model.hasAccessibility || !model.hasScreenCapture {
-                Button {
-                    permissionsPresented = true
-                } label: {
-                    Label("Set Up Permissions", systemImage: "lock.shield")
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            VStack(alignment: .leading, spacing: 10) {
+                if model.selectedApp != nil {
+                    Text("Target Window").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                    Picker("Window", selection: $windowSelection) {
+                        Text("Choose a Window").tag(Optional<CGWindowID>.none)
+                        ForEach(model.appWindows) { window in
+                            Text(verbatim: window.displayTitle).tag(Optional(window.id))
+                        }
+                    }
+                    .labelsHidden()
+                    .disabled(model.busy || model.isRefreshing || model.appWindows.isEmpty)
+                    if let window = model.selectedWindow {
+                        Text(verbatim: window.sizeLabel).font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                    }
                 }
-                .buttonStyle(.plain)
-                .padding(16)
-            }
+                if !model.hasAccessibility || !model.hasScreenCapture {
+                    Button { permissionsPresented = true } label: {
+                        Label("Set Up Permissions", systemImage: "lock.shield")
+                    }.buttonStyle(.plain)
+                }
+            }.padding(16)
         }
     }
 
@@ -92,7 +123,7 @@ struct ContentView: View {
             } label: {
                 Label("Refresh Windows", systemImage: "arrow.clockwise")
             }
-            .disabled(model.busy)
+            .disabled(model.busy || model.isRefreshing)
             .help("Refresh apps and windows (⌘R)")
 
             Button {
@@ -110,19 +141,22 @@ struct ContentView: View {
         }
         ToolbarItemGroup(placement: .primaryAction) {
             Button {
-                Task { await model.takeScreenshot() }
+                Task { await model.performCapture() }
             } label: {
-                Label(model.capture == nil ? String(localized: "Capture") : String(localized: "Retake"), systemImage: "camera")
+                Label(model.captureActionTitle, systemImage: "camera")
+                    .labelStyle(.titleAndIcon)
             }
-            .disabled(!model.canCapture)
-            .help("Capture at the current window size (⌘K)")
+            .disabled(!model.canPerformCapture)
+            .help(model.windowSizing == .current
+                  ? String(localized: "Capture at the current window size (⌘K)")
+                  : String(localized: "Apply the custom window size, verify it, and capture (⌘K)"))
 
             Button {
                 Task { await model.export() }
             } label: {
-                Label("Export", systemImage: "square.and.arrow.up")
+                Label("Export", systemImage: "square.and.arrow.up").labelStyle(.titleAndIcon)
             }
-            .disabled(model.capture == nil || model.exportConfiguration == nil || model.previewBusy || model.busy)
+            .disabled(!model.canExport)
             .help("Export PNG (⌘E)")
         }
         if #available(macOS 26.0, *) {

@@ -1,7 +1,11 @@
 import ApplicationServices
 import Foundation
 
-public actor AccessibilityWindowService {
+public protocol WindowResizing: Sendable {
+    func resize(_ selected: WindowDescriptor, request: WindowRequest) async throws -> ResizeResult
+}
+
+public actor AccessibilityWindowService: WindowResizing {
     public init() {}
 
     private func attribute(_ element: AXUIElement, _ key: String) -> CFTypeRef? {
