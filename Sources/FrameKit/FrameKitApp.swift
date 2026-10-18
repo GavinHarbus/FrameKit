@@ -14,7 +14,7 @@ struct FrameKitApp: App {
         .windowToolbarStyle(.unified)
         .commands {
             SidebarCommands()
-            InspectorCommands()
+            InspectorPaneCommands()
             CommandGroup(replacing: .newItem) {}
             CommandMenu("Capture") {
                 Button("Refresh Window List") { Task { await model.refresh() } }

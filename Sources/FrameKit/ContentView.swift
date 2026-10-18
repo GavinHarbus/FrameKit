@@ -21,16 +21,22 @@ struct ContentView: View {
             applicationSidebar
                 .navigationSplitViewColumnWidth(min: 190, ideal: 220, max: 280)
         } detail: {
-            PreviewCanvas(model: model)
+            HStack(spacing: 0) {
+                PreviewCanvas(model: model)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                if inspectorPresented {
+                    InspectorPane {
+                        CaptureInspector(model: model, focusedField: $focusedDimension)
+                    }
+                }
+            }
                 .navigationTitle(Text(verbatim: model.selectedApp?.name ?? "FrameKit"))
                 .navigationSubtitle(Text(verbatim: model.selectedWindow?.displayTitle ?? String(localized: "Window Capture")))
                 .toolbar { captureToolbar }
         }
         .navigationSplitViewStyle(.balanced)
-        .inspector(isPresented: $inspectorPresented) {
-            CaptureInspector(model: model, focusedField: $focusedDimension)
-                .inspectorColumnWidth(min: 280, ideal: 300, max: 340)
-        }
+        .modifier(ContinuousToolbarBackground())
+        .focusedSceneValue(\.inspectorVisibility, $inspectorPresented)
         .background(EditingSurface(hidesTitlebarSeparator: true) { focusedDimension = nil })
         .task { await model.refresh() }
         .task { await model.monitorPermissions() }
