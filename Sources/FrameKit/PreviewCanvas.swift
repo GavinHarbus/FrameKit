@@ -54,10 +54,8 @@ struct PreviewCanvas: View {
                 }
                 .font(.caption).padding(.horizontal, 20).padding(.vertical, 12)
             }
-            Divider()
             statusBar
         }
-        .background(.background)
     }
 
     @ViewBuilder

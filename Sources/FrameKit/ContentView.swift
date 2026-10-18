@@ -8,6 +8,7 @@ struct ContentView: View {
     @State private var permissionsPresented = false
     @State private var sidebarSelection: pid_t?
     @State private var windowSelection: CGWindowID?
+    @FocusState private var focusedDimension: WindowDimensionField?
 
     init(model: AppModel) {
         self.model = model
@@ -27,9 +28,10 @@ struct ContentView: View {
         }
         .navigationSplitViewStyle(.balanced)
         .inspector(isPresented: $inspectorPresented) {
-            CaptureInspector(model: model)
+            CaptureInspector(model: model, focusedField: $focusedDimension)
                 .inspectorColumnWidth(min: 280, ideal: 300, max: 340)
         }
+        .background(EditingSurface(hidesTitlebarSeparator: true) { focusedDimension = nil })
         .task { await model.refresh() }
         .task { await model.monitorPermissions() }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in

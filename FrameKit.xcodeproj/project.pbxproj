@@ -12,12 +12,14 @@
 		082EFFF4FE82F32E324A6683 /* CaptureInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0111C594A58CEF31C4BEC4EC /* CaptureInspector.swift */; };
 		0DC0E469116D5EBA429C7A90 /* PreviewCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCDE04BB7A6A14881ACBCFF /* PreviewCanvas.swift */; };
 		22D68D7241FA1F606B8294D8 /* LocalizationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68493EF59EF3609C64A8D1B /* LocalizationTests.swift */; };
+		23713B98AB76B27DE57A8D1C /* EditingSurfaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D4DBBFB7874AF8103FDD7D /* EditingSurfaceTests.swift */; };
 		270E932EC8BE2CEFB271A9FD /* libFrameKitCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DCE5B5CF82EE95398984DF /* libFrameKitCore.a */; };
 		3107ADA543677EA14F5257EB /* WorkflowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85C7B69CE0E32DA9548C49D /* WorkflowTests.swift */; };
 		37D4EC745756553E99DB5FD6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 595A15856B7F3D1438D86C0D /* Localizable.xcstrings */; };
 		526C077738E450E4B903EABA /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8C3300B0031CA36D92CB4F4A /* InfoPlist.xcstrings */; };
 		5692599EAA05D01724C2159C /* OutputSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F35CC5578163CB15A4B1BF /* OutputSizeView.swift */; };
 		5A0C064DFA4E370A48FB3CE1 /* libFrameKitCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 24DCE5B5CF82EE95398984DF /* libFrameKitCore.a */; };
+		5BCA1E9ED9F1E508FAB2D157 /* EditingSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F26090B40ACBD705CA78CDC /* EditingSurface.swift */; };
 		669A513F273F0BA33C40E7B9 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77143953EB3EA2F70856EB8 /* Models.swift */; };
 		686C2BD6620F5D64FC589717 /* WindowCaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F265D5FB6F39BCB2E9092F9 /* WindowCaptureService.swift */; };
 		6EF36B366F3B642A1109FDFC /* PermissionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C342CC80F5E71346774A4 /* PermissionView.swift */; };
@@ -30,6 +32,7 @@
 		C8C675564C4C4F22AA2885F0 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D7AF5EB7EA49AA85A3638EF /* AppModel.swift */; };
 		CCB831B397E3964098AD890C /* PermissionMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D6639CBDDF3B9907551372 /* PermissionMonitor.swift */; };
 		D6615EF83E868DAA0679C0C4 /* PermissionMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D10B4B32C201A88E7A68902C /* PermissionMonitorTests.swift */; };
+		EA0964DBD4551A6DF2227430 /* EditingSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F26090B40ACBD705CA78CDC /* EditingSurface.swift */; };
 		EC40894F6A3A1F87EFBC45C6 /* FrameKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7307D91D28E61DFE1A0528F4 /* FrameKitTests.swift */; };
 		F7008023C5D3091025B9971B /* AccessibilityWindowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A9EB1F0859E8159D5B56D0 /* AccessibilityWindowService.swift */; };
 		FB74457734CD94D008FB4242 /* ImageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B013D6ADD88107FFF7C5412 /* ImageExporter.swift */; };
@@ -67,8 +70,10 @@
 		8C3300B0031CA36D92CB4F4A /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		8D7AF5EB7EA49AA85A3638EF /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		91A9EB1F0859E8159D5B56D0 /* AccessibilityWindowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityWindowService.swift; sourceTree = "<group>"; };
+		93D4DBBFB7874AF8103FDD7D /* EditingSurfaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingSurfaceTests.swift; sourceTree = "<group>"; };
 		99D6639CBDDF3B9907551372 /* PermissionMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionMonitor.swift; sourceTree = "<group>"; };
 		9B013D6ADD88107FFF7C5412 /* ImageExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExporter.swift; sourceTree = "<group>"; };
+		9F26090B40ACBD705CA78CDC /* EditingSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingSurface.swift; sourceTree = "<group>"; };
 		C68493EF59EF3609C64A8D1B /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
 		C835105AF86BF4D7243B8CD3 /* FrameKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FrameKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB1C342CC80F5E71346774A4 /* PermissionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionView.swift; sourceTree = "<group>"; };
@@ -141,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				5D2A62D853CA0F6A087A4ED0 /* AppSelectionTests.swift */,
+				93D4DBBFB7874AF8103FDD7D /* EditingSurfaceTests.swift */,
 				7307D91D28E61DFE1A0528F4 /* FrameKitTests.swift */,
 				C68493EF59EF3609C64A8D1B /* LocalizationTests.swift */,
 				D10B4B32C201A88E7A68902C /* PermissionMonitorTests.swift */,
@@ -155,6 +161,7 @@
 				8D7AF5EB7EA49AA85A3638EF /* AppModel.swift */,
 				0111C594A58CEF31C4BEC4EC /* CaptureInspector.swift */,
 				0E33AE46649142062F25880D /* ContentView.swift */,
+				9F26090B40ACBD705CA78CDC /* EditingSurface.swift */,
 				D1D61436239235E029E9440D /* FrameKitApp.swift */,
 				18F35CC5578163CB15A4B1BF /* OutputSizeView.swift */,
 				CB1C342CC80F5E71346774A4 /* PermissionView.swift */,
@@ -336,6 +343,7 @@
 				C8C675564C4C4F22AA2885F0 /* AppModel.swift in Sources */,
 				082EFFF4FE82F32E324A6683 /* CaptureInspector.swift in Sources */,
 				00EE9D2F77BF1B60A29129D5 /* ContentView.swift in Sources */,
+				5BCA1E9ED9F1E508FAB2D157 /* EditingSurface.swift in Sources */,
 				8DF57903EA631F8C76AB29DC /* FrameKitApp.swift in Sources */,
 				5692599EAA05D01724C2159C /* OutputSizeView.swift in Sources */,
 				6EF36B366F3B642A1109FDFC /* PermissionView.swift in Sources */,
@@ -349,6 +357,8 @@
 			files = (
 				81835D3D508EE58F3F4E64C8 /* AppModel.swift in Sources */,
 				91F41F9493728F18E979F89D /* AppSelectionTests.swift in Sources */,
+				EA0964DBD4551A6DF2227430 /* EditingSurface.swift in Sources */,
+				23713B98AB76B27DE57A8D1C /* EditingSurfaceTests.swift in Sources */,
 				EC40894F6A3A1F87EFBC45C6 /* FrameKitTests.swift in Sources */,
 				22D68D7241FA1F606B8294D8 /* LocalizationTests.swift in Sources */,
 				D6615EF83E868DAA0679C0C4 /* PermissionMonitorTests.swift in Sources */,

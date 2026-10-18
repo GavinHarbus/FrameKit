@@ -19,6 +19,10 @@
 
 界面采用原生 NavigationSplitView、sidebar 列表、统一工具栏和可收起的 inspector。macOS 26 自动使用系统 Liquid Glass 导航与工具栏样式，颜色和明暗外观跟随系统；macOS 14/15 使用相应的原生样式。
 
+窗口尺寸和输出尺寸的输入框支持 Return 提交并结束编辑、Esc 退出编辑、点击空白或其他控件结束编辑；Tab 仍按字段顺序切换。输出尺寸弹窗中，无字段聚焦时按 Esc 关闭弹窗。局部事件监听只作用于 FrameKit 自身窗口，不读取其他应用输入，也不拦截原有点击操作。
+
+检查器使用标题和留白分组，移除了表单卡片边框、标题栏横线和预览底部横线。侧边栏和检查器继续使用系统原生分栏与材质，保留拖动宽度和收起能力。
+
 应用图标使用提供的 FrameKit logo。原图保存在 `Design/FrameKit-logo-original.png`，适配后的透明边缘图标及生成说明见 [Design/README.md](Design/README.md)。AppIcon 资源已包含 macOS 的全部十个尺寸槽位。
 
 ## 界面语言
