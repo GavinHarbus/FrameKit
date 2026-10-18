@@ -410,7 +410,19 @@ final class AppModel: ObservableObject {
               let config = renderedConfiguration else { return }
         begin(String(localized: "Choose a save location…"))
         defer { end() }
-        let safeName = captureAppName.components(separatedBy: CharacterSet(charactersIn: "/:\\")).joined(separator: "-")
+        // Use the title captured with the image, even if the live window has since changed pages.
+        let invalidCharacters = CharacterSet(charactersIn: "/:\\").union(.controlCharacters)
+        let components = [captureAppName, shot.window.title].map {
+            $0.components(separatedBy: invalidCharacters).joined(separator: "-")
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+        }.filter { !$0.isEmpty }
+        let title = components.isEmpty ? "FrameKit" : components.joined(separator: "-")
+        // Leave room for dimensions and the extension within the filesystem's filename limit.
+        var safeName = ""
+        for character in title {
+            guard safeName.utf8.count + String(character).utf8.count <= 220 else { break }
+            safeName.append(character)
+        }
         let name = "\(safeName)-\(config.size.width)x\(config.size.height).png"
         guard let url = await exportDestination(name, config.size) else { return }
         activity = String(localized: "Exporting and verifying the file…")

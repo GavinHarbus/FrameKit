@@ -37,6 +37,9 @@ private actor WorkflowWindows: WindowCapturing, WindowResizing {
         return ResizeResult(requested: request, actualFrame: frame, isStable: true)
     }
     func removeWindows() { available = [] }
+    func setTitle(_ title: String) {
+        available = available.map { WindowDescriptor(id: $0.id, processID: $0.processID, title: title, frame: $0.frame) }
+    }
     func setFailure() { failEnumeration = true }
     func counts() -> (Int, Int, Int) { (captures, resizes, queries) }
 }
@@ -68,12 +71,13 @@ private actor WorkflowImages: ImageProcessing {
 final class WorkflowTests: XCTestCase {
     @MainActor
     private func makeModel(accessibility: Bool = false, windows: WorkflowWindows = WorkflowWindows(),
-                           images: WorkflowImages = WorkflowImages(), destination: URL? = nil) async throws -> AppModel {
+                           images: WorkflowImages = WorkflowImages(), destination: URL? = nil,
+                           onExportName: ((String) -> Void)? = nil) async throws -> AppModel {
         let permissions = PermissionMonitor(read: { PermissionSnapshot(accessibility: accessibility, screenCapture: true) },
                                             requestAccessibility: {}, requestScreenCapture: {})
         let model = AppModel(permissions: permissions, captureService: windows, windowService: windows, images: images,
                              runningApps: { [RunningApp(id: 100, name: "Demo", icon: nil)] },
-                             exportDestination: { _, _ in destination })
+                             exportDestination: { name, _ in onExportName?(name); return destination })
         await model.refresh()
         model.selectApp(100)
         return model
@@ -167,15 +171,23 @@ final class WorkflowTests: XCTestCase {
     @MainActor
     func testExportWritesDisplayedPixelsAndTracksWhichSettingsWereSaved() async throws {
         let images = WorkflowImages()
+        let windows = WorkflowWindows()
+        await windows.setTitle("Settings/偏好:General")
+        var suggestedName: String?
         let url = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".png")
         defer { try? FileManager.default.removeItem(at: url) }
-        let model = try await makeModel(images: images, destination: url)
+        let model = try await makeModel(windows: windows, images: images, destination: url,
+                                        onExportName: { suggestedName = $0 })
         await model.performCapture()
         await waitFor { model.canExport }
         let preview = try XCTUnwrap(model.renderedPreview)
         let before = await images.summary()
+        await windows.setTitle("Another Page")
+        await model.refresh(automatic: true)
         XCTAssertFalse(model.isCurrentExported)
         await model.export()
+        XCTAssertEqual(suggestedName, "Demo-Settings-偏好-General-80x40.png",
+                       "The filename must use the captured page title, sanitize path separators, and preserve Unicode.")
         let after = await images.summary()
         XCTAssertEqual(after.0, before.0, "Export must not perform a second resize/render.")
         XCTAssertTrue(after.1 === preview, "The exported bitmap must be the displayed preview.")
