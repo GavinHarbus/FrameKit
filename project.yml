@@ -3,6 +3,8 @@ options:
   deploymentTarget:
     macOS: '14.0'
   createIntermediateGroups: true
+  developmentLanguage: en
+  knownRegions: [en, zh-Hans, Base]
 settings:
   base:
     SWIFT_VERSION: '5.0'
@@ -12,6 +14,7 @@ settings:
     ENABLE_APP_SANDBOX: NO
     ENABLE_HARDENED_RUNTIME: YES
     GENERATE_INFOPLIST_FILE: YES
+    SWIFT_EMIT_LOC_STRINGS: YES
   configs:
     Release:
       CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
@@ -28,7 +31,7 @@ targets:
   FrameKit:
     type: application
     platform: macOS
-    sources: [Sources/FrameKit, Resources/Assets.xcassets]
+    sources: [Sources/FrameKit, Resources/Assets.xcassets, Resources/Localizable.xcstrings, Resources/InfoPlist.xcstrings]
     dependencies:
       - target: FrameKitCore
     info:
@@ -40,7 +43,7 @@ targets:
         LSApplicationCategoryType: public.app-category.developer-tools
         NSHighResolutionCapable: true
         NSPrincipalClass: NSApplication
-        NSScreenCaptureUsageDescription: FrameKit 需要读取你选择的应用窗口，以预览、截取和导出图片。
+        NSScreenCaptureUsageDescription: FrameKit captures your selected app window so you can preview and export screenshots.
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.framekit.local
@@ -53,7 +56,7 @@ targets:
   FrameKitTests:
     type: bundle.unit-test
     platform: macOS
-    sources: [Tests/FrameKitTests]
+    sources: [Tests/FrameKitTests, Resources/Localizable.xcstrings, Resources/InfoPlist.xcstrings]
     dependencies:
       - target: FrameKitCore
     settings:

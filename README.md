@@ -19,6 +19,18 @@
 
 应用图标使用提供的 FrameKit logo。原图保存在 `Design/FrameKit-logo-original.png`，适配后的透明边缘图标及生成说明见 [Design/README.md](Design/README.md)。AppIcon 资源已包含 macOS 的全部十个尺寸槽位。
 
+## 界面语言
+
+支持 **English（en）** 和 **简体中文（zh-Hans）**。英文为源语言和回退语言；应用默认按 macOS 的首选语言顺序选择受支持语言。没有匹配语言时使用英文。
+
+若要保持中文系统、仅让 FrameKit 显示英文：前往 **系统设置 → 通用 → 语言与地区 → 应用程序**，添加 FrameKit 并选择 English，然后重新打开应用。应用内不另设语言切换器，也不覆盖系统语言偏好。
+
+- `Resources/Localizable.xcstrings` 管理界面、菜单、帮助、状态和错误；`Resources/InfoPlist.xcstrings` 管理屏幕捕获权限的用途说明。
+- 新文案先编写英文，再在 String Catalog 中补充简体中文。SwiftUI 使用本地化文本；运行时文案使用 `String(localized:)`。有条件分支的文案也必须分别本地化。
+- FrameKitCore 为静态库，使用 `AppLocalization.bundle` 查找宿主资源；测试目标打包同一份目录以验证实际编译后的翻译。
+- 应用名、窗口标题、文件路径保持原样。窗口 ID 和 AX 错误码作为文本插值，避免添加千位分隔符；`pt`、`px`、PNG、sRGB 保持一致。动态变量放在完整句子的占位符内，不拼接翻译片段。新增数量文案时在 String Catalog 中配置 plural variants。
+- 修改文案后构建会产生 `.stringsdata`，可运行 `python3 Tools/CheckLocalizations.py` 检查提取到的所有界面文案都有双语翻译。
+
 ## 构建与测试
 
 仓库包含生成好的 Xcode 项目；正常使用无需安装 XcodeGen。修改 `project.yml` 后可用 XcodeGen 重新生成。
@@ -26,6 +38,14 @@
 ```sh
 xcodebuild -project FrameKit.xcodeproj -scheme FrameKit -configuration Debug -derivedDataPath build build
 xcodebuild -project FrameKit.xcodeproj -scheme FrameKit -destination 'platform=macOS' -derivedDataPath build test
+```
+
+语言回归检查：
+
+```sh
+xcodebuild -project FrameKit.xcodeproj -scheme FrameKit -destination 'platform=macOS' -derivedDataPath build -testLanguage en -testRegion US test
+xcodebuild -project FrameKit.xcodeproj -scheme FrameKit -destination 'platform=macOS' -derivedDataPath build -testLanguage zh-Hans -testRegion CN test
+python3 Tools/CheckLocalizations.py
 ```
 
 Debug 应用位于 `build/Build/Products/Debug/FrameKit.app`。Debug 和 Release 统一使用名称 **FrameKit**、Bundle ID `com.framekit.local` 及相同的 Apple Development 证书签名，仅保留调试与优化等编译配置差异。证书签名保持跨构建的应用身份，避免之前 ad-hoc 签名每次改动代码后身份变化。对外分发仍需 Developer ID 签名及公证。
@@ -55,6 +75,8 @@ Debug 应用位于 `build/Build/Products/Debug/FrameKit.app`。Debug 和 Release
 自动测试覆盖非法尺寸、超大图防护、多窗口歧义、尺寸读回判断、三种缩放的实际像素、透明图合成、不含 alpha 的 PNG 编码及文件写入校验。
 
 2026-10-18 本机验证：权限修复后 Debug、Release 构建成功，12 项测试全部通过；新增的 4 项回归测试覆盖异步授权、后台检测、撤销、取消监听和避免重复通知。Release 启动与完整签名校验通过，签名要求已从构建哈希变为证书身份。真实跨应用截图链路仍需用户授予当前构建权限后验证。
+
+本地化验证：英文与简体中文环境分别通过全部 17 项测试；校验双语资源完整性、格式占位符、权限用途说明、核心错误、名称保留及英文回退。Release 已实际启动检查英文和中文工具栏与检查器；仅指定日文首选语言时正确回退英文。语言测试使用临时启动参数，不修改用户的持久语言设置。
 
 真实跨应用操作需要用户在 macOS 中授权，不能由测试自动授予。首次运行请用 NyxAstra 及另一个普通应用验证：
 

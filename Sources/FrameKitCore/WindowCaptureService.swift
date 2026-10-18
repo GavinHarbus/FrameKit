@@ -15,7 +15,7 @@ public actor WindowCaptureService {
 
     private func content() async throws -> SCShareableContent {
         guard CGPreflightScreenCaptureAccess() else {
-            throw FrameKitError("请先允许屏幕录制，以读取窗口列表和截图。授权后点击刷新；系统要求时重新打开 FrameKit。")
+            throw FrameKitError(String(localized: "Allow Screen Recording to list and capture windows. Then refresh, or reopen FrameKit if macOS asks.", bundle: AppLocalization.bundle))
         }
         return try await SCShareableContent.excludingDesktopWindows(true, onScreenWindowsOnly: true)
     }
@@ -38,22 +38,22 @@ public actor WindowCaptureService {
         guard let window = windows.first(where: {
             $0.windowID == id && $0.owningApplication?.processID == processID && descriptor($0) != nil
         }) else {
-            throw FrameKitError("所选窗口已关闭、隐藏或最小化。请将它恢复到当前桌面，再刷新选择。")
+            throw FrameKitError(String(localized: "The selected window was closed, hidden, or minimized. Restore it to the current desktop, then refresh and select it again.", bundle: AppLocalization.bundle))
         }
         return window
     }
 
     public func current(_ selected: WindowDescriptor) async throws -> WindowDescriptor {
         let window = try await resolve(id: selected.id, processID: selected.processID)
-        guard let value = descriptor(window) else { throw FrameKitError("所选窗口不可用。") }
+        guard let value = descriptor(window) else { throw FrameKitError(String(localized: "The selected window is unavailable.", bundle: AppLocalization.bundle)) }
         return value
     }
 
     public func capture(_ selected: WindowDescriptor, expectedFrame: CGRect? = nil) async throws -> CapturedWindow {
         let window = try await resolve(id: selected.id, processID: selected.processID)
-        guard let current = descriptor(window) else { throw FrameKitError("所选窗口不可用。") }
+        guard let current = descriptor(window) else { throw FrameKitError(String(localized: "The selected window is unavailable.", bundle: AppLocalization.bundle)) }
         if let expectedFrame, !WindowMatcher.sameFrame(current.frame, expectedFrame) {
-            throw FrameKitError("窗口在调整后又发生了变化，已停止截图。请刷新并重试，或直接截取当前窗口。")
+            throw FrameKitError(String(localized: "The window changed after resizing, so capture was stopped. Refresh and try again, or capture at its current size.", bundle: AppLocalization.bundle))
         }
         let filter = SCContentFilter(desktopIndependentWindow: window)
         let scale = filter.pointPixelScale
@@ -62,7 +62,7 @@ public actor WindowCaptureService {
               bounds.width > 0, bounds.height > 0,
               bounds.width * CGFloat(scale) <= CGFloat(PixelSize.maximumEdge),
               bounds.height * CGFloat(scale) <= CGFloat(PixelSize.maximumEdge) else {
-            throw FrameKitError("窗口的捕获尺寸无效或过大，请减小窗口后重试。")
+            throw FrameKitError(String(localized: "The capture dimensions are invalid or too large. Resize the window and try again.", bundle: AppLocalization.bundle))
         }
         let size = try PixelSize(width: Int((bounds.width * CGFloat(scale)).rounded()),
                                  height: Int((bounds.height * CGFloat(scale)).rounded()))
@@ -84,7 +84,7 @@ public actor WindowCaptureService {
         // If the target changes during the asynchronous capture, never label an uncertain frame as verified.
         let after = try await self.current(current)
         guard WindowMatcher.sameFrame(current.frame, after.frame, tolerance: 0.5) else {
-            throw FrameKitError("截图过程中窗口尺寸或位置改变，请等待窗口稳定后重拍。")
+            throw FrameKitError(String(localized: "The window moved or resized during capture. Wait for it to settle, then retake.", bundle: AppLocalization.bundle))
         }
         return CapturedWindow(image: image, window: after, scale: scale)
     }

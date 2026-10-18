@@ -21,7 +21,7 @@ public enum ImageExporter {
               let context = CGContext(data: nil, width: size.width, height: size.height,
                                       bitsPerComponent: 8, bytesPerRow: 0, space: space,
                                       bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue) else {
-            throw FrameKitError("无法分配图片内存，请减小导出尺寸。")
+            throw FrameKitError(String(localized: "Not enough memory to render the image. Reduce the export size.", bundle: AppLocalization.bundle))
         }
         // Export has no background setting. Fit padding and transparent corners are white.
         context.setFillColorSpace(space)
@@ -30,7 +30,7 @@ public enum ImageExporter {
         context.interpolationQuality = .high
         context.draw(source, in: destinationRect(source: CGSize(width: source.width, height: source.height),
                                                  target: size.cgSize, mode: configuration.mode))
-        guard let image = context.makeImage() else { throw FrameKitError("无法生成导出图片。") }
+        guard let image = context.makeImage() else { throw FrameKitError(String(localized: "Could not render the export image.", bundle: AppLocalization.bundle)) }
         return image
     }
 
@@ -38,10 +38,10 @@ public enum ImageExporter {
     public static func pngData(_ image: CGImage, expected: PixelSize) throws -> Data {
         let data = NSMutableData()
         guard let destination = CGImageDestinationCreateWithData(data, UTType.png.identifier as CFString, 1, nil) else {
-            throw FrameKitError("无法创建 PNG 文件。")
+            throw FrameKitError(String(localized: "Could not create the PNG file.", bundle: AppLocalization.bundle))
         }
         CGImageDestinationAddImage(destination, image, nil)
-        guard CGImageDestinationFinalize(destination) else { throw FrameKitError("PNG 编码失败。") }
+        guard CGImageDestinationFinalize(destination) else { throw FrameKitError(String(localized: "PNG encoding failed.", bundle: AppLocalization.bundle)) }
         let result = data as Data
         try validatePNG(result, expected: expected)
         return result
@@ -54,7 +54,7 @@ public enum ImageExporter {
               (properties[kCGImagePropertyPixelWidth] as? NSNumber)?.intValue == expected.width,
               (properties[kCGImagePropertyPixelHeight] as? NSNumber)?.intValue == expected.height,
               (properties[kCGImagePropertyHasAlpha] as? NSNumber)?.boolValue != true else {
-            throw FrameKitError("导出校验失败：文件的尺寸、格式或透明通道不符合设置。")
+            throw FrameKitError(String(localized: "Export verification failed: the file dimensions, format, or alpha channel do not match the settings.", bundle: AppLocalization.bundle))
         }
     }
 }

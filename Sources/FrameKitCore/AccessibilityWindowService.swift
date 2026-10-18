@@ -14,7 +14,7 @@ public actor AccessibilityWindowService {
         guard let position = attribute(element, kAXPositionAttribute),
               let size = attribute(element, kAXSizeAttribute),
               CFGetTypeID(position) == AXValueGetTypeID(), CFGetTypeID(size) == AXValueGetTypeID() else {
-            throw FrameKitError("目标应用没有提供可读取的窗口尺寸或位置。")
+            throw FrameKitError(String(localized: "The app does not provide a readable window size or position.", bundle: AppLocalization.bundle))
         }
         var point = CGPoint.zero
         var dimensions = CGSize.zero
@@ -22,17 +22,17 @@ public actor AccessibilityWindowService {
               AXValueGetValue(size as! AXValue, .cgSize, &dimensions),
               point.x.isFinite, point.y.isFinite, dimensions.width.isFinite, dimensions.height.isFinite,
               dimensions.width > 0, dimensions.height > 0 else {
-            throw FrameKitError("目标应用返回了无效的窗口尺寸。")
+            throw FrameKitError(String(localized: "The app returned invalid window dimensions.", bundle: AppLocalization.bundle))
         }
         return CGRect(origin: point, size: dimensions)
     }
 
     private func resolve(_ selected: WindowDescriptor) throws -> AXUIElement {
-        guard AXIsProcessTrusted() else { throw FrameKitError("请先在系统设置中授予 FrameKit 辅助功能权限。") }
+        guard AXIsProcessTrusted() else { throw FrameKitError(String(localized: "Allow Accessibility access for FrameKit in System Settings first.", bundle: AppLocalization.bundle)) }
         let app = AXUIElementCreateApplication(selected.processID)
         AXUIElementSetMessagingTimeout(app, 1)
         guard let elements = attribute(app, kAXWindowsAttribute) as? [AXUIElement] else {
-            throw FrameKitError("目标应用没有提供窗口控制接口，仍可尝试直接截图。")
+            throw FrameKitError(String(localized: "The app does not provide window controls. You can still try capturing it.", bundle: AppLocalization.bundle))
         }
         let candidates: [(AXUIElement, WindowCandidate)] = elements.compactMap { element in
             AXUIElementSetMessagingTimeout(element, 1)
@@ -44,33 +44,39 @@ public actor AccessibilityWindowService {
         return candidates[index].0
     }
 
-    private func requireWritable(_ element: AXUIElement, _ key: String, label: String) throws {
+    private func requireWritable(_ element: AXUIElement, _ key: String) throws {
         var writable = DarwinBoolean(false)
         guard AXUIElementIsAttributeSettable(element, key as CFString, &writable) == .success, writable.boolValue else {
-            throw FrameKitError("这个窗口不允许修改\(label)。请退出全屏或选择普通窗口；也可以直接截图。")
+            if key == kAXSizeAttribute {
+                throw FrameKitError(String(localized: "This window cannot be resized. Exit full screen or choose a regular window, or capture directly.", bundle: AppLocalization.bundle))
+            }
+            throw FrameKitError(String(localized: "This window cannot be moved. Exit full screen or choose a regular window, or capture directly.", bundle: AppLocalization.bundle))
         }
     }
 
-    private func check(_ result: AXError, action: String) throws {
+    private func check(_ result: AXError, moving: Bool = false) throws {
         guard result == .success else {
-            throw FrameKitError("\(action)未完成（AX \(result.rawValue)）。窗口可能已部分改变，请刷新确认实际尺寸后重试。")
+            if moving {
+                throw FrameKitError(String(localized: "Move failed (AX \(String(result.rawValue))). The window may have partially changed. Refresh to check its actual size before retrying.", bundle: AppLocalization.bundle))
+            }
+            throw FrameKitError(String(localized: "Resize failed (AX \(String(result.rawValue))). The window may have partially changed. Refresh to check its actual size before retrying.", bundle: AppLocalization.bundle))
         }
     }
 
     public func resize(_ selected: WindowDescriptor, request: WindowRequest) async throws -> ResizeResult {
         let element = try resolve(selected)
-        try requireWritable(element, kAXSizeAttribute, label: "尺寸")
-        if request.position != nil { try requireWritable(element, kAXPositionAttribute, label: "位置") }
+        try requireWritable(element, kAXSizeAttribute)
+        if request.position != nil { try requireWritable(element, kAXPositionAttribute) }
         // Check the original geometry again immediately before writing.
         guard WindowMatcher.sameFrame(try frame(element), selected.frame) else {
-            throw FrameKitError("窗口刚刚发生变化，请刷新后重新调整。")
+            throw FrameKitError(String(localized: "The window just changed. Refresh before resizing again.", bundle: AppLocalization.bundle))
         }
         var size = request.size
-        guard let sizeValue = AXValueCreate(.cgSize, &size) else { throw FrameKitError("无法创建窗口尺寸。") }
-        try check(AXUIElementSetAttributeValue(element, kAXSizeAttribute as CFString, sizeValue), action: "调整尺寸")
+        guard let sizeValue = AXValueCreate(.cgSize, &size) else { throw FrameKitError(String(localized: "Could not create the window size value.", bundle: AppLocalization.bundle)) }
+        try check(AXUIElementSetAttributeValue(element, kAXSizeAttribute as CFString, sizeValue))
         if var point = request.position {
-            guard let value = AXValueCreate(.cgPoint, &point) else { throw FrameKitError("无法创建窗口坐标。") }
-            try check(AXUIElementSetAttributeValue(element, kAXPositionAttribute as CFString, value), action: "调整位置")
+            guard let value = AXValueCreate(.cgPoint, &point) else { throw FrameKitError(String(localized: "Could not create the window position value.", bundle: AppLocalization.bundle)) }
+            try check(AXUIElementSetAttributeValue(element, kAXPositionAttribute as CFString, value), moving: true)
         }
         var previous = try frame(element)
         var stableReadings = 0

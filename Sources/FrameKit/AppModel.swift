@@ -21,7 +21,7 @@ final class AppModel: ObservableObject {
     @Published private(set) var hasScreenCapture = false
     @Published var busy = false
     @Published var activity = ""
-    @Published var message = "选择应用窗口，开始制作截图。"
+    @Published var message = String(localized: "Choose an app window to start creating screenshots.")
     @Published var messageIsError = false
     @Published var windowWidth = "1280"
     @Published var windowHeight = "800"
@@ -100,12 +100,12 @@ final class AppModel: ObservableObject {
 
     func refresh() async {
         guard !busy else { return }
-        begin("正在读取应用与窗口…")
+        begin(String(localized: "Loading apps and windows…"))
         defer { end() }
         checkPermissions()
         apps = NSWorkspace.shared.runningApplications
             .filter { $0.activationPolicy == .regular && $0.processIdentifier != ProcessInfo.processInfo.processIdentifier }
-            .map { RunningApp(id: $0.processIdentifier, name: $0.localizedName ?? "应用 \($0.processIdentifier)", icon: $0.icon) }
+            .map { RunningApp(id: $0.processIdentifier, name: $0.localizedName ?? String(localized: "App \(String($0.processIdentifier))"), icon: $0.icon) }
             .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
         if let selectedAppID, !apps.contains(where: { $0.id == selectedAppID }) {
             self.selectedAppID = nil
@@ -115,7 +115,7 @@ final class AppModel: ObservableObject {
         guard hasScreenCapture else {
             windows = []
             selectedWindowID = nil
-            status("允许屏幕录制后，点击刷新即可选择窗口。")
+            status(String(localized: "Allow Screen Recording, then refresh to choose a window."))
             return
         }
         do {
@@ -123,13 +123,13 @@ final class AppModel: ObservableObject {
             if let selectedWindowID, !appWindows.contains(where: { $0.id == selectedWindowID }) {
                 self.selectedWindowID = nil
                 clearCapture()
-                status("之前选择的窗口已不可用，请重新选择。")
+                status(String(localized: "The previously selected window is no longer available. Choose another window."))
             } else {
                 if selectedWindowID == nil, appWindows.count == 1 {
                     selectedWindowID = appWindows.first?.id
                     windowSelectionChanged()
                 }
-                status("窗口列表已更新。")
+                status(String(localized: "Window list updated."))
             }
         } catch { windows = []; status(error.localizedDescription, error: true) }
     }
@@ -147,13 +147,13 @@ final class AppModel: ObservableObject {
         windowHeight = WindowDescriptor.number(window.frame.height)
         windowX = WindowDescriptor.number(window.frame.minX)
         windowY = WindowDescriptor.number(window.frame.minY)
-        status("已选择「\(window.displayTitle)」，可调整尺寸或直接截图。")
+        status(String(localized: "Selected “\(window.displayTitle)”. Resize it or capture directly."))
     }
 
     func resize(andCapture: Bool) async {
         checkPermissions()
         guard canResize, let selected = selectedWindow else { return }
-        begin(andCapture ? "正在调整、验证并截图…" : "正在调整并验证窗口…")
+        begin(andCapture ? String(localized: "Resizing, verifying, and capturing…") : String(localized: "Resizing and verifying the window…"))
         resizeResult = nil
         defer { end() }
         do {
@@ -168,20 +168,22 @@ final class AppModel: ObservableObject {
             let actual = WindowDescriptor.describe(result.actualFrame.size)
             if andCapture {
                 guard result.isStable else {
-                    throw FrameKitError("窗口布局尚未稳定，未自动截图。实际读取：\(actual) pt。请稍后直接截图。")
+                    throw FrameKitError(String(localized: "The layout has not settled, so capture was skipped. Actual size: \(actual) pt. Try capturing again shortly.", bundle: AppLocalization.bundle))
                 }
                 let shot = try await captureService.capture(current, expectedFrame: result.actualFrame)
                 accept(shot)
-                status(result.isExact ? "尺寸已验证，截图完成。" : "已按实际尺寸 \(actual) pt 截图；目标应用限制了请求的尺寸或位置。")
+                status(result.isExact ? String(localized: "Size verified. Screenshot captured.")
+                       : String(localized: "Captured at the actual size of \(actual) pt. The app limited the requested size or position."))
             } else {
-                status(result.isExact ? "窗口已调整，实际尺寸验证通过。" : "请求未完全生效。实际尺寸 \(actual) pt，请查看验证结果。")
+                status(result.isExact ? String(localized: "Window resized. Actual size verified.")
+                       : String(localized: "Partially applied. Actual size: \(actual) pt. Check the resize result."))
             }
         } catch { status(error.localizedDescription, error: true) }
     }
 
     func takeScreenshot() async {
         guard canCapture, let selected = selectedWindow else { return }
-        begin(capture == nil ? "正在截取所选窗口…" : "正在重新截取窗口…")
+        begin(capture == nil ? String(localized: "Capturing the selected window…") : String(localized: "Retaking the screenshot…"))
         defer { end() }
         do {
             let shot = try await captureService.capture(selected)
@@ -189,15 +191,16 @@ final class AppModel: ObservableObject {
                 resizeResult = nil
             }
             accept(shot)
-            status("截图完成，预览为最终导出效果。")
+            status(String(localized: "Screenshot captured. The preview shows the export result."))
         } catch {
-            status(error.localizedDescription + (capture == nil ? "" : " 当前仍显示上一次截图。"), error: true)
+            status(capture == nil ? error.localizedDescription
+                   : String(localized: "\(error.localizedDescription) The previous screenshot is still displayed."), error: true)
         }
     }
 
     private func accept(_ shot: CapturedWindow) {
         capture = shot
-        captureAppName = selectedApp?.name ?? "应用"
+        captureAppName = selectedApp?.name ?? String(localized: "App")
         lastExportURL = nil
         replaceWindow(shot.window)
         schedulePreview()
@@ -231,11 +234,11 @@ final class AppModel: ObservableObject {
         guard screens.contains(where: {
             let overlap = $0.intersection(titleBar)
             return overlap.width >= min(80, size.width) && overlap.height >= min(20, size.height)
-        }) else { throw FrameKitError("这个坐标会把窗口标题栏移出可用屏幕，请选择可见的位置。") }
+        }) else { throw FrameKitError(String(localized: "This position would move the title bar offscreen. Choose a visible position.", bundle: AppLocalization.bundle)) }
     }
 
     private func configuration() throws -> ExportConfiguration {
-        guard let source = capture?.image else { throw FrameKitError("请先截取窗口。") }
+        guard let source = capture?.image else { throw FrameKitError(String(localized: "Capture a window first.", bundle: AppLocalization.bundle)) }
         let size = try originalSize
             ? PixelSize(width: source.width, height: source.height)
             : PixelSize(widthText: exportWidth, heightText: exportHeight)
@@ -271,27 +274,27 @@ final class AppModel: ObservableObject {
         guard !busy, let shot = capture else { return }
         let config: ExportConfiguration
         do { config = try configuration() } catch { status(error.localizedDescription, error: true); return }
-        begin("选择保存位置…")
+        begin(String(localized: "Choose a save location…"))
         defer { end() }
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.png]
         panel.canCreateDirectories = true
         let safeName = captureAppName.components(separatedBy: CharacterSet(charactersIn: "/:\\")).joined(separator: "-")
         panel.nameFieldStringValue = "\(safeName)-\(config.size.width)x\(config.size.height).png"
-        panel.title = "导出截图"
-        panel.message = "\(config.size.label) · PNG · sRGB · 不含透明通道"
+        panel.title = String(localized: "Export Screenshot")
+        panel.message = String(localized: "\(config.size.label) · PNG · sRGB · No alpha channel")
         let response: NSApplication.ModalResponse = await withCheckedContinuation { continuation in
             if let window = NSApp.keyWindow {
                 panel.beginSheetModal(for: window) { continuation.resume(returning: $0) }
             } else { panel.begin { continuation.resume(returning: $0) } }
         }
         guard response == .OK, let url = panel.url else { return }
-        activity = "正在导出并校验文件…"
+        activity = String(localized: "Exporting and verifying the file…")
         do {
             try await images.save(shot.image, configuration: config, to: url)
             lastExportURL = url
-            status("已保存 \(url.lastPathComponent)，像素尺寸和 PNG 格式校验通过。")
-        } catch { status("导出失败：" + error.localizedDescription, error: true) }
+            status(String(localized: "Saved \(url.lastPathComponent). Pixel dimensions and PNG format verified."))
+        } catch { status(String(localized: "Export failed: \(error.localizedDescription)"), error: true) }
     }
 
     func showExport() { if let lastExportURL { NSWorkspace.shared.activateFileViewerSelecting([lastExportURL]) } }

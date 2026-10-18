@@ -27,6 +27,6 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSScreenCaptureUsageDescription</key>
-	<string>FrameKit 需要读取你选择的应用窗口，以预览、截取和导出图片。</string>
+	<string>FrameKit captures your selected app window so you can preview and export screenshots.</string>
 </dict>
 </plist>

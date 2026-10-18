@@ -16,12 +16,12 @@ struct FrameKitApp: App {
             SidebarCommands()
             InspectorCommands()
             CommandGroup(replacing: .newItem) {}
-            CommandMenu("截图") {
-                Button("刷新窗口列表") { Task { await model.refresh() } }
+            CommandMenu("Capture") {
+                Button("Refresh Window List") { Task { await model.refresh() } }
                     .keyboardShortcut("r", modifiers: .command).disabled(model.busy)
-                Button("截取所选窗口") { Task { await model.takeScreenshot() } }
+                Button("Capture Selected Window") { Task { await model.takeScreenshot() } }
                     .keyboardShortcut("k", modifiers: .command).disabled(!model.canCapture)
-                Button("导出 PNG…") { Task { await model.export() } }
+                Button("Export PNG…") { Task { await model.export() } }
                     .keyboardShortcut("e", modifiers: .command)
                     .disabled(model.capture == nil || model.busy || model.exportConfiguration == nil)
             }
