@@ -12,6 +12,8 @@ A free, native macOS tool for developers and creators who need consistent screen
 
 **Free · macOS 14+ · Apple Silicon & Intel · English & Simplified Chinese**
 
+![FrameKit showing a screenshot preview alongside window size and position controls](docs/images/framekit.png)
+
 ## Screenshots for the work you ship
 
 - **App listings:** keep window layouts consistent across screenshots for the Mac App Store and product directories.
@@ -31,14 +33,13 @@ A free, native macOS tool for developers and creators who need consistent screen
 
 All screenshot processing stays on your Mac. No account, API key, or cloud upload is needed.
 
-## Get started
+## Three steps to your screenshot
 
-1. Visit [GitHub Releases](https://github.com/GavinHarbus/FrameKit/releases) and download the DMG attached to a release.
-2. Open the DMG and drag **FrameKit** into **Applications**.
-3. Open FrameKit and allow **Screen Recording** to select and capture windows. Allow **Accessibility** if you want to resize or move them.
-4. Choose a window, use **Capture** or **Resize & Capture**, then preview and **Export**.
+1. **Choose a window.** Select the app or browser window you want to show.
+2. **Set the size and capture.** Use its current dimensions or enter a custom window size.
+3. **Preview and export.** Retake if needed, then save at original or custom pixel dimensions.
 
-Updates are available through GitHub Releases. Quit FrameKit before replacing the app with a newer version. Source builds are covered in the [development guide](docs/DEVELOPMENT.md).
+Screen Recording permission enables capture. Accessibility is only needed to resize or move windows.
 
 ## A few useful details
 
@@ -51,7 +52,7 @@ Updates are available through GitHub Releases. Quit FrameKit before replacing th
 
 ## Help shape FrameKit
 
-[Report a bug or suggest a feature](https://github.com/GavinHarbus/FrameKit/issues). For bugs, include your macOS version, FrameKit version, target app, and steps to reproduce. Use the [support page](https://gavinschneestudio.org/contact.html) for private messages.
+[Report a bug or suggest a feature](https://github.com/GavinHarbus/FrameKit/issues) · [Build from source](docs/DEVELOPMENT.md) · [Contact support](https://gavinschneestudio.org/contact.html)
 
 If FrameKit saves you time, star the repository or share the [product page](https://gavinschneestudio.org/products/framekit.html) with another developer.
 
