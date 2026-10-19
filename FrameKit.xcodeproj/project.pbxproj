@@ -64,6 +64,7 @@
 		18F35CC5578163CB15A4B1BF /* OutputSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputSizeView.swift; sourceTree = "<group>"; };
 		1B9ACB6E7F81C4DCD7C78245 /* FrameKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24DCE5B5CF82EE95398984DF /* libFrameKitCore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFrameKitCore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EAECA3C5E2D2B894A49C7C6 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		3F265D5FB6F39BCB2E9092F9 /* WindowCaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowCaptureService.swift; sourceTree = "<group>"; };
 		595A15856B7F3D1438D86C0D /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5D2A62D853CA0F6A087A4ED0 /* AppSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSelectionTests.swift; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 		2290A6AB40AE7388FC92B21D = {
 			isa = PBXGroup;
 			children = (
+				EB2DF8F0CAEBE93D6E87A021 /* Config */,
 				5AB23972F1CBF3634B390B50 /* Resources */,
 				9296496A57BF95328DA5882A /* Sources */,
 				3F256447AB6D60EB989E800A /* Tests */,
@@ -193,6 +195,14 @@
 				3F265D5FB6F39BCB2E9092F9 /* WindowCaptureService.swift */,
 			);
 			path = FrameKitCore;
+			sourceTree = "<group>";
+		};
+		EB2DF8F0CAEBE93D6E87A021 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				3EAECA3C5E2D2B894A49C7C6 /* Signing.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -439,6 +449,7 @@
 		};
 		1B0C49D735E604FA3E86E184 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3EAECA3C5E2D2B894A49C7C6 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -470,7 +481,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "$(FRAMEKIT_CODE_SIGN_IDENTITY)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -508,6 +519,7 @@
 		};
 		42001A78359B9E0019F6622A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3EAECA3C5E2D2B894A49C7C6 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -539,7 +551,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "$(FRAMEKIT_CODE_SIGN_IDENTITY)";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;

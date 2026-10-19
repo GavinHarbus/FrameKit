@@ -2,65 +2,61 @@
   <img src="Design/FrameKit-AppIcon.png" alt="FrameKit app icon" width="96" height="96">
 </p>
 
-# FrameKit: Mac App Screenshots
+# FrameKit — Window Screenshots for Mac
 
-Resize app and browser windows, capture their content, and export PNGs at the dimensions you need.
+**Resize the window. Capture the screenshot. Export the right pixels.**
 
-FrameKit brings window sizing, screenshot previews, and image export into one native Mac app. Create screenshots for app listings, Chrome extensions, websites, tutorials, and release notes without switching between capture tools and image editors.
+A free, native macOS tool for developers and creators who need consistent screenshots of apps, browser extensions, and websites. Set a window's size before capture, preview the result, and export a PNG with the exact dimensions your layout needs.
 
-**[Explore FrameKit](https://gavinschneestudio.org/products/framekit.html)** · [Get support](https://gavinschneestudio.org/contact.html) · [Report an issue](https://github.com/GavinHarbus/FrameKit/issues)
+**[Get FrameKit on GitHub Releases](https://github.com/GavinHarbus/FrameKit/releases)** · [Product website](https://gavinschneestudio.org/products/framekit.html) · [Support](https://gavinschneestudio.org/contact.html)
 
-macOS 14+ · English and Simplified Chinese · Local processing
+**Free · macOS 14+ · Apple Silicon & Intel · English & Simplified Chinese**
 
-## What you can make
+## Screenshots for the work you ship
 
-- **App listing screenshots:** set a consistent window layout before capturing different screens for the Mac App Store or a product directory.
-- **Extension and web app demos:** capture Chrome extension pages, browser side panels, dashboards, and websites.
-- **Product content:** export images for landing pages, documentation, tutorials, and social posts.
+- **App listings:** keep window layouts consistent across screenshots for the Mac App Store and product directories.
+- **Browser extensions and web apps:** showcase Chrome extension pages, side panels, dashboards, and websites.
+- **Product launches and documentation:** create images for landing pages, tutorials, release notes, and social posts.
 
-## Why FrameKit
+## From window to PNG in one workflow
 
-- **Set the layout before capture.** Enter a window width and height, with an optional screen position.
-- **Check the actual result.** FrameKit reads back the window dimensions, including when the target app applies its own size limits.
-- **Capture the window you choose.** Select a running app and its window, then preview and retake as needed.
-- **Export the pixels you need.** Keep the original image size or choose custom dimensions with fit, center crop, or stretch.
-- **Keep files easy to identify.** Suggested filenames include the app name, captured window title, and output dimensions.
-- **Work locally.** No account, API key, or screenshot upload is needed.
+| Feature | What it does |
+| --- | --- |
+| Precise window sizing | Set width, height, and optional screen position before capture. |
+| Actual-size verification | Read back the result so you can see when an app applies its own size limits. |
+| Window selection | Choose a running app and its window without capturing your whole desktop. |
+| Preview and retake | Check the image and capture again with the same size settings. |
+| Exact PNG dimensions | Keep the original size or use fit with white padding, center crop, or stretch. |
+| Descriptive filenames | Include the app name, captured window title, and output dimensions. |
 
-## Three steps to your screenshot
+All screenshot processing stays on your Mac. No account, API key, or cloud upload is needed.
 
-1. **Choose a window.** Open your app, extension page, or website and select its app or browser window in FrameKit.
-2. **Capture at the right size.** Use **Current Size**, or enter **Custom Size** values and choose **Resize & Capture**.
-3. **Preview and export.** Retake if needed, optionally set **Output Size**, and save the preview as a PNG.
+## Get started
 
-Window dimensions use points; output dimensions use pixels. Resizing a window changes its layout. Resizing the captured image changes the exported file.
+1. Visit [GitHub Releases](https://github.com/GavinHarbus/FrameKit/releases) and download the DMG attached to a release.
+2. Open the DMG and drag **FrameKit** into **Applications**.
+3. Open FrameKit and allow **Screen Recording** to select and capture windows. Allow **Accessibility** if you want to resize or move them.
+4. Choose a window, use **Capture** or **Resize & Capture**, then preview and **Export**.
 
-Browser captures include the visible browser window and its toolbar. Show extension content in a tab or side panel; full-page scrolling capture is not supported.
+Updates are available through GitHub Releases. Quit FrameKit before replacing the app with a newer version. Source builds are covered in the [development guide](docs/DEVELOPMENT.md).
 
-## Get FrameKit
+## A few useful details
 
-Planned Mac App Store price: **US$0.99, one-time purchase**. The store link will be added to the [product page](https://gavinschneestudio.org/products/framekit.html) after release.
+- **Window size and image size are different.** Window dimensions use points and change the app's layout. Output dimensions use pixels and change the saved image.
+- **Some apps limit their window size.** FrameKit checks the actual dimensions instead of assuming every resize succeeds.
+- **Browser screenshots include the toolbar.** Show extension content in a tab or side panel. Full-page scrolling capture is not supported.
+- **Export the images you want to keep.** The latest capture is held in memory. A successful retake, an explicit app/window switch, or quitting replaces or clears it; exported PNGs remain where you saved them.
 
-Prefer to build it yourself? Start with the [development guide](docs/DEVELOPMENT.md).
+[Privacy policy](https://gavinschneestudio.org/privacy.html#framekit) · [Terms](https://gavinschneestudio.org/terms.html#framekit)
 
-## Privacy and permissions
+## Help shape FrameKit
 
-Screen Recording permission lets FrameKit list and capture windows. Accessibility is only needed to resize or move them. Both permissions are managed in macOS System Settings.
+[Report a bug or suggest a feature](https://github.com/GavinHarbus/FrameKit/issues). For bugs, include your macOS version, FrameKit version, target app, and steps to reproduce. Use the [support page](https://gavinschneestudio.org/contact.html) for private messages.
 
-Screenshots are processed locally and held temporarily in memory. Export images you want to keep before switching the selected app or window, or quitting. FrameKit has no automatic screenshot history or cloud upload.
-
-[Privacy policy](https://gavinschneestudio.org/privacy.html#framekit) · [Terms](https://gavinschneestudio.org/terms.html#framekit) · [Refund guidance](https://gavinschneestudio.org/refund.html#app-store)
-
-## Feedback and development
-
-[Open an issue](https://github.com/GavinHarbus/FrameKit/issues) for a bug or feature request. Include the FrameKit version, macOS version, target app, and steps to reproduce. For private support, use the [contact page](https://gavinschneestudio.org/contact.html).
-
-If FrameKit helps your workflow, a GitHub star or a link to the [product page](https://gavinschneestudio.org/products/framekit.html) helps other developers find it.
+If FrameKit saves you time, star the repository or share the [product page](https://gavinschneestudio.org/products/framekit.html) with another developer.
 
 ## License
 
-Source code and documentation are available under the [MIT License](LICENSE), which permits commercial use, modification, and redistribution, including selling modified versions.
+Source code and documentation use the [MIT License](LICENSE). Logo and app icon artwork have a [separate usage notice](Design/README.md#artwork-license).
 
-The FrameKit logo and app icon artwork are excluded from the MIT license; see the [artwork notice](Design/README.md#artwork-license). No permission to imply an official or endorsed FrameKit release is granted.
-
-Made by [Gavin Schnee Studio](https://gavinschneestudio.org).
+Built by [Gavin Schnee Studio](https://gavinschneestudio.org).

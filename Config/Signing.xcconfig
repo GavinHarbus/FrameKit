@@ -1,0 +1,5 @@
+// The public project contains no developer-specific team or certificate.
+FRAMEKIT_CODE_SIGN_IDENTITY = Apple Development
+
+// Optional local settings, intentionally excluded from Git.
+#include? "Signing.local.xcconfig"

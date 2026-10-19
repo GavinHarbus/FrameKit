@@ -7,7 +7,7 @@ FrameKit uses Swift and SwiftUI, Accessibility for window control, ScreenCapture
 Use Xcode with the macOS 26 SDK or later. The app runs on macOS 14 or later; newer system appearance APIs are guarded by availability checks.
 
 1. Open `FrameKit.xcodeproj`. The generated project is included, so XcodeGen is not needed for a normal build.
-2. Select your own development team in Signing & Capabilities. The checked-in project contains the maintainer's signing settings; its certificates are not included.
+2. Copy `Config/Signing.local.xcconfig.example` to `Config/Signing.local.xcconfig`, then enter your own team ID. This local file is ignored by Git. Keep `Apple Development` for development or choose `Developer ID Application` when preparing a direct release. Certificates stay in your Keychain.
 3. Select the **FrameKit** scheme and **My Mac**, then run.
 4. Grant Screen Recording permission to list and capture windows. Grant Accessibility only for resizing or moving them. Reopen the app if macOS requests it.
 
@@ -29,7 +29,11 @@ Debug and Release share the app name **FrameKit** and bundle identifier `com.fra
 
 ## Distribution status
 
-The current project builds a **non-sandboxed development app**. App Sandbox is disabled, Hardened Runtime is enabled, and signing is configured for Apple Development. This configuration is not a Mac App Store submission. Store packaging, signing, sandbox compatibility, and review remain separate release work.
+FrameKit targets **direct DMG distribution**, with App Sandbox disabled so that Accessibility can control other applications' windows. Hardened Runtime is enabled.
+
+The public project defaults to Apple Development signing and includes no developer-specific team. `Config/Signing.local.xcconfig` supplies optional local overrides. Before a public binary release, sign the app with Developer ID Application, package the DMG, notarize the distribution, staple the ticket, and test the downloaded artifact with Gatekeeper. A local Release build is not yet a completed distribution package. See [Apple's Developer ID distribution guide](https://developer.apple.com/developer-id/).
+
+Keep signing private keys, exported certificates, App Store Connect API keys, and notarization credentials in the Keychain or a secret store, outside Git. Build artifacts belong in `build/` or a release attachment, not the source tree.
 
 ## Workflow details
 
